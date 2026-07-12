@@ -12,30 +12,30 @@ using namespace std;
 
 double gettime(int restart=0);
 
-template <typename T> void GetMemory(T *&data, T *&data0, int n)	// ·ÖÅä¶ÑÄÚ´æ¿Õ¼ä£¬Í¨¹ı²ÎÊı"·µ»Ø"Ê×µØÖ·
-{																	// Òşº¬Ô¼¶¨£ºÖ¸Õë·Ç¿Õ¾Í±íÊ¾Ö¸Õë"ÓµÓĞ"¶Ñ¿Õ¼ä×ÊÔ´
-	if(data0!=NULL) delete [] data0;								// ÏÈÊÍ·ÅÔ­ÏÈËù"ÓµÓĞ"µÄ¶Ñ¿Õ¼ä×ÊÔ´
+template <typename T> void GetMemory(T *&data, T *&data0, int n)	// åˆ†é…å †å†…å­˜ç©ºé—´ï¼Œé€šè¿‡å‚æ•°"è¿”å›"é¦–åœ°å€
+{																	// éšå«çº¦å®šï¼šæŒ‡é’ˆéç©ºå°±è¡¨ç¤ºæŒ‡é’ˆ"æ‹¥æœ‰"å †ç©ºé—´èµ„æº
+	if(data0!=NULL) delete [] data0;								// å…ˆé‡Šæ”¾åŸå…ˆæ‰€"æ‹¥æœ‰"çš„å †ç©ºé—´èµ„æº
 	if(data !=NULL) delete [] data;
-	data0 = new T[n];												// ÖØĞÂÉêÇëĞÂµÄ£¨ÈİÁ¿·ûºÏÒªÇóµÄ£©¶Ñ¿Õ¼ä×ÊÔ´
+	data0 = new T[n];												// é‡æ–°ç”³è¯·æ–°çš„ï¼ˆå®¹é‡ç¬¦åˆè¦æ±‚çš„ï¼‰å †ç©ºé—´èµ„æº
 	data = new T[n];
 }
 
-template <typename T> void FreeMemory(T *&data, T *&data0)			// ÊÍ·ÅÖ¸ÕëËù"ÓµÓĞ"µÄ¶Ñ¿Õ¼ä×ÊÔ´
+template <typename T> void FreeMemory(T *&data, T *&data0)			// é‡Šæ”¾æŒ‡é’ˆæ‰€"æ‹¥æœ‰"çš„å †ç©ºé—´èµ„æº
 {
 	if(data0!=NULL) delete [] data0;
 	if(data !=NULL) delete [] data;
-	data0 = data = NULL;											// ÕâÒ»Ìõ¸³ÖµÓï¾ä·Ç³£ÖØÒª£¡±£³Ö"Òşº¬Ô¼¶¨"
+	data0 = data = NULL;											// è¿™ä¸€æ¡èµ‹å€¼è¯­å¥éå¸¸é‡è¦ï¼ä¿æŒ"éšå«çº¦å®š"
 }
 
-//»Ö¸´ÎªÔ­Ê¼Êı¾İ
-template <typename T> void ReSet(T *data, const T *data0, int n)	// ÓÃÓÚ»Ö¸´"Ô­Ê¼Êı¾İ"£¬ÒÔ±£Ö¤²»Í¬µÄÅÅĞòËã·¨´¦ÀíÍêÈ«ÏàÍ¬µÄÊı¾İ
+//æ¢å¤ä¸ºåŸå§‹æ•°æ®
+template <typename T> void ReSet(T *data, const T *data0, int n)	// ç”¨äºæ¢å¤"åŸå§‹æ•°æ®"ï¼Œä»¥ä¿è¯ä¸åŒçš„æ’åºç®—æ³•å¤„ç†å®Œå…¨ç›¸åŒçš„æ•°æ®
 {
 	for(int i=0; i<n; i++)
 		data[i] = data0[i];
 }
 
-//¼ì²éÊÇ·ñÅÅĞò³É¹¦£¨ÉıĞò£©
-template <typename T> bool Check(const T *a, int size)				// ¼ìÑéÊı×éÔªËØÊÇ·ñÒÑ°´ÉıĞòÅÅÁĞ
+//æ£€æŸ¥æ˜¯å¦æ’åºæˆåŠŸï¼ˆå‡åºï¼‰
+template <typename T> bool Check(const T *a, int size)				// æ£€éªŒæ•°ç»„å…ƒç´ æ˜¯å¦å·²æŒ‰å‡åºæ’åˆ—
 {
 	for(int i=1; i<size; i++)
 		if(a[i-1] > a[i])
@@ -44,31 +44,31 @@ template <typename T> bool Check(const T *a, int size)				// ¼ìÑéÊı×éÔªËØÊÇ·ñÒÑ°
 }
 
 
-//ÖØÖÃ¼ÆÊıÆ÷
+//é‡ç½®è®¡æ•°å™¨
 inline void Reset_counters(ll &cmp_cnt, ll &asn_cnt){
 	cmp_cnt = 0;
 	asn_cnt = 0;
 }
 
-//´øÓĞ¼ÆÊıµÄ±È½Ï£¨´óÓÚ£©
+//å¸¦æœ‰è®¡æ•°çš„æ¯”è¾ƒï¼ˆå¤§äºï¼‰
 template <typename T> inline bool Cmp_with_cnt(const T a, const T b, ll &cmp_cnt){
 	cmp_cnt++;
 	return a > b;
 }
 
-//´øÓĞ¼ÆÊıµÄ±È½Ï(´óÓÚµÈÓÚ)
+//å¸¦æœ‰è®¡æ•°çš„æ¯”è¾ƒ(å¤§äºç­‰äº)
 template <typename T> inline bool Cmp_with_cnt2(const T a, const T b, ll &cmp_cnt){
 	cmp_cnt++;
 	return a >= b;
 }
 
-//´øÓĞ¼ÆÊıµÄ¸³Öµ
+//å¸¦æœ‰è®¡æ•°çš„èµ‹å€¼
 template <typename T> inline void Asn_with_cnt(T &a, T &b, ll &asn_cnt){
 	asn_cnt++;
 	a = b;
 }
 
-//´øÓĞ¼ÆÊıµÄ½»»»±äÁ¿µÄÖµ
+//å¸¦æœ‰è®¡æ•°çš„äº¤æ¢å˜é‡çš„å€¼
 template <typename T> inline void Excg_with_cnt(T &a, T &b, ll &asn_cnt){
 	T temp;
 	Asn_with_cnt(temp, a, asn_cnt);
@@ -78,16 +78,16 @@ template <typename T> inline void Excg_with_cnt(T &a, T &b, ll &asn_cnt){
 
 
 
-// Ã°ÅİÅÅĞò
+// å†’æ³¡æ’åº
 template <typename T> void Bubble(T *a, int size, ll &cmp_cnt, ll &asn_cnt)	
 {
-	T temp;											// ¶¨ÒåÒ»¸ö¾Ö²¿±äÁ¿£¬Êı¾İÀàĞÍÓëĞÎÊ½Êı¾İÀàĞÍÏàÍ¬
+	T temp;											// å®šä¹‰ä¸€ä¸ªå±€éƒ¨å˜é‡ï¼Œæ•°æ®ç±»å‹ä¸å½¢å¼æ•°æ®ç±»å‹ç›¸åŒ
 	int i, j;
-	for(i=1; i<size; i++)							// ¹²½øĞĞ size-1 ÂÖ±È½ÏºÍ½»»»
+	for(i=1; i<size; i++)							// å…±è¿›è¡Œ size-1 è½®æ¯”è¾ƒå’Œäº¤æ¢
 	{
 		for(j=0; j<size-i; j++)
 		{
-			if(Cmp(a[j], a[j+1]))						// ÏàÁÚÔªËØÖ®¼ä±È½Ï£¬±ØÒªÊ±
+			if(Cmp(a[j], a[j+1]))						// ç›¸é‚»å…ƒç´ ä¹‹é—´æ¯”è¾ƒï¼Œå¿…è¦æ—¶
 			{
 				Excg(a[j], a[j + 1]);
 			}
@@ -95,55 +95,61 @@ template <typename T> void Bubble(T *a, int size, ll &cmp_cnt, ll &asn_cnt)
 	}
 }
 
-// Ñ¡ÔñÅÅĞò
+// é€‰æ‹©æ’åº
 template <typename T> void Select(T *a, int size, ll &cmp_cnt, ll &asn_cnt)	
 {
 	T temp;
 	int i, j, k=0;
-	for(i=1; i<size; i++)							// Ñ­»·size-1´Î
+	for(i=1; i<size; i++)							// å¾ªç¯size-1æ¬¡
 	{
 		for(j=i; j<size; j++)
 			if(Cmp(a[k], a[j]))
-				k = j;								// ÕÒ³öµ±Ç°·¶Î§ÄÚ"×îĞ¡"ÔªËØµÄÏÂ±ê
-		if(k!=i-1)									// Èô"×îĞ¡"ÔªËØ²»ÊÇa[i-1]£¬Ôò½»»»Ö®
+				k = j;								// æ‰¾å‡ºå½“å‰èŒƒå›´å†…"æœ€å°"å…ƒç´ çš„ä¸‹æ ‡
+		if(k!=i-1)									// è‹¥"æœ€å°"å…ƒç´ ä¸æ˜¯a[i-1]ï¼Œåˆ™äº¤æ¢ä¹‹
 		{					
-			Excg(a[k], a[i -  1]); // ½»»» a[j] Óë a[j+1]
+			Excg(a[k], a[i -  1]); // äº¤æ¢ a[j] ä¸ a[j+1]
 		}
 		k = i;
 	}
 }
 
-// ¿ìËÙÅÅĞò
+// å¿«é€Ÿæ’åº
 template <typename T> void Qsort(T *a, int size, ll &cmp_cnt, ll &asn_cnt)	
 {
-	T pivot, temp;
-	int left=0, right=size-1;						// ÏÂ±ê£¨ÕûÊı£©
+	int left = 0, right = size - 1;
 
-	if(size<=1) return;
+    T pivot;
+    Asn(pivot, a[(left + right) / 2]);
 
-	pivot = a[right];								// Ñ¡Ôñ×îºóÒ»¸öÖµÎª·Ö½çÖµ
-	do
-	{
-		while(left<right && Cmp2(pivot, a[left])) left++;	// ´Ë´¦ "<=" ÊÇÈÃÓë·Ö½çÖµÏàµÈµÄÔªËØÔİÊ±ÁôÔÚÔ­µØ
-		while(left<right && Cmp2(a[right], pivot)) right--;// ´Ë´¦ ">=" ÊÇÈÃÓë·Ö½çÖµÏàµÈµÄÔªËØÔİÊ±ÁôÔÚÔ­µØ
-		if(left < right)
-		{						
-			Excg(a[left], a[right]);          // ½»»» a[j] Óë a[j+1]
-		}
-	}while(left < right);
-	Asn(a[size-1], a[left]);
-	Asn(a[left], pivot);			// ÕÒµ½·Ö½çµã left
-	Qsort(a, left, cmp_cnt, asn_cnt);									// µİ¹éµ÷ÓÃ(×ó²à²¿·Ö)
-	Qsort(a+left+1, size-left-1, cmp_cnt, asn_cnt);					// µİ¹éµ÷ÓÃ(ÓÒ²à²¿·Ö)
+    while(left <= right)
+    {
+        while(Cmp(pivot, a[left]))
+            left++;
+
+        while(Cmp(a[right], pivot))
+            right--;
+
+        if(left <= right)
+        {
+            Excg(a[left], a[right]);
+            left++;
+            right--;
+        }
+    }
+
+    if(right > 0)
+        Qsort(a, right + 1, cmp_cnt, asn_cnt);
+    if(left < size - 1)
+        Qsort(a + left, size - left, cmp_cnt, asn_cnt);
 }
 
-//²åÈëÅÅĞò
+//æ’å…¥æ’åº
 template <typename T> void Insertionsort(T *a, int size, ll &cmp_cnt, ll &asn_cnt){    
 	for(int i = 1; i < size; i++){
 		T key;
 		Asn(key, a[i]);
 		int j = i - 1;
-		while(j >= 0 && Cmp(key, a[j])){   //a[j] < key
+		while(j >= 0 && Cmp(a[j], key)){   //a[j] < key
 			Asn(a[j + 1], a[j]);
 			j--;
 		}
@@ -151,7 +157,7 @@ template <typename T> void Insertionsort(T *a, int size, ll &cmp_cnt, ll &asn_cn
 	}
 }
 
-//Ï£¶ûÅÅĞò
+//å¸Œå°”æ’åº
 template <typename T> void ShellSort(T *a, int size, ll &cmp_cnt, ll &asn_cnt) {
     for (int gap = size / 2; gap > 0; gap /= 2) {
         for (int i = gap; i < size; i++) {
@@ -168,7 +174,7 @@ template <typename T> void ShellSort(T *a, int size, ll &cmp_cnt, ll &asn_cnt) {
     }
 }
 
-//Í°ÅÅĞò
+//æ¡¶æ’åº
 template <typename T> void Bucketsort(T *a, int size, ll &cmp_cnt, ll &asn_cnt){
 	int root = 0;
 	int min_idx = root;
@@ -183,7 +189,7 @@ template <typename T> void Bucketsort(T *a, int size, ll &cmp_cnt, ll &asn_cnt){
         }
     }
 
-    int bucket_count = size/100;
+    int bucket_count = size;
     vector<vector<T>> buckets(bucket_count);
 
     double range = static_cast<double>(a[max_idx] - a[min_idx]);
