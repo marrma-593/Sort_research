@@ -12,8 +12,8 @@ void InitScore(Score *data, int n)
 	double mean=72, variance=6*6;
 	for(int i=0; i<n; i++)
 	{
-		sprintf(data[i].Id, "%08d", i+1);	// Çë×ÔÑ§ sprintf º¯Êı¡£Çë×¢Òâ£ºÔ­Ê¼Êı¾İÖĞ£¬Ñ§ºÅÊÇÍêÈ«Ë³ĞòÅÅÁĞµÄ£¡
-		data[i].Total  = data[i].Chinese   = int(0.5+GaussRand(mean, variance));	// ¼Ó0.5ºóÈ¡Õû¼´Ğ¡Êı²¿·Ö"ËÄÉáÎåÈë"
+		sprintf(data[i].Id, "%08d", i+1);	// è¯·è‡ªå­¦ sprintf å‡½æ•°ã€‚è¯·æ³¨æ„ï¼šåŸå§‹æ•°æ®ä¸­ï¼Œå­¦å·æ˜¯å®Œå…¨é¡ºåºæ’åˆ—çš„ï¼
+		data[i].Total  = data[i].Chinese   = int(0.5+GaussRand(mean, variance));	// åŠ 0.5åå–æ•´å³å°æ•°éƒ¨åˆ†"å››èˆäº”å…¥"
 		data[i].Total += data[i].Math      = int(0.5+GaussRand(mean, variance));
 		data[i].Total += data[i].English   = int(0.5+GaussRand(mean, variance));
 		data[i].Total += data[i].Physics   = int(0.5+GaussRand(mean, variance));
@@ -25,11 +25,11 @@ void ShowScore(const Score *data, int size, int last)
 {
 	int m;
 	if(last<=0 || last>=size)
-		m = 0;								// ËùÓĞÊı¾İ
+		m = 0;								// æ‰€æœ‰æ•°æ®
 	else
-		m = size-last;						// ×îºólastÏîÊı¾İ
-	cout << "\tµ¹ĞòÊä³ö²¿·ÖÊı¾İ£¨¼´×Ü·ÖÇ°Èô¸ÉÃûµÄÊı¾İ£©" << endl;
-	cout << "\t Ñ§ ºÅ  ×Ü·Ö Óï Êı Íâ Àí »¯" << endl;
+		m = size-last;						// æœ€ålasté¡¹æ•°æ®
+	cout << "\tå€’åºè¾“å‡ºéƒ¨åˆ†æ•°æ®ï¼ˆå³æ€»åˆ†å‰è‹¥å¹²åçš„æ•°æ®ï¼‰" << endl;
+	cout << "\t å­¦ å·  æ€»åˆ† è¯­ æ•° å¤– ç† åŒ–" << endl;
 	for(int i=size-1; i>=m; i--)
 		cout << '\t' << data[i].Id << ' ' << data[i].Total << ' '
 			 << data[i].Chinese << ' ' << data[i].Math << ' '
@@ -39,28 +39,32 @@ void ShowScore(const Score *data, int size, int last)
 
 void TestScore()
 {
-	Score *data0=NULL, *data=NULL;							// Á½¸öÖ¸Õë³õÊ¼»¯ÎªNULL·Ç³£ÖØÒª£¡
-	char algo[][20] = {"Ã°ÅİÅÅĞò", "Ñ¡ÔñÅÅĞò", "¿ìËÙÅÅĞò", "²åÈëÅÅĞò", "Ï£¶ûÅÅĞò", "Í°ÅÅĞò"};  // C-×Ö·û´®Êı×é
-	void (*f[])(T*, int, ll&, ll&) = {Bubble<T>, Select<T>, Qsort<T>, Insertionsort<T>, ShellSort<T>};// º¯ÊıÖ¸ÕëÊı×é£¨ÔªËØÎªÒ»ÏµÁĞº¯ÊıµÄÈë¿ÚµØÖ·£©
-	int n, m = sizeof(f)/sizeof(*f);						// mÎªº¯ÊıÖ¸ÕëÊı×éfµÄÔªËØ¸öÊı£¨´Ë´¦ÓĞ3¸öº¯ÊıÖ¸Õë£¬·Ö±ğÖ¸Ïò3¸öÅÅĞòº¯ÊıµÄÈë¿ÚµØÖ·£©
+	Score *data0=NULL, *data=NULL;							// ä¸¤ä¸ªæŒ‡é’ˆåˆå§‹åŒ–ä¸ºNULLéå¸¸é‡è¦ï¼
+	char algo[][20] = {"å†’æ³¡æ’åº", "é€‰æ‹©æ’åº", "å¿«é€Ÿæ’åº", "æ’å…¥æ’åº", "å¸Œå°”æ’åº", "æ¡¶æ’åº"};  // C-å­—ç¬¦ä¸²æ•°ç»„
+	void (*f[])(Score*, int, ll&, ll&) = {Bubble<Score>, Select<Score>, Qsort<Score>, Insertionsort<Score>, ShellSort<Score>, Bucketsort<Score>};// å‡½æ•°æŒ‡é’ˆæ•°ç»„ï¼ˆå…ƒç´ ä¸ºä¸€ç³»åˆ—å‡½æ•°çš„å…¥å£åœ°å€ï¼‰
+	int n, m = sizeof(f)/sizeof(*f);						// mä¸ºå‡½æ•°æŒ‡é’ˆæ•°ç»„fçš„å…ƒç´ ä¸ªæ•°ï¼ˆæ­¤å¤„æœ‰3ä¸ªå‡½æ•°æŒ‡é’ˆï¼Œåˆ†åˆ«æŒ‡å‘3ä¸ªæ’åºå‡½æ•°çš„å…¥å£åœ°å€ï¼‰
 	bool flag;
 	double t;
+	ll cmp_cnt = 0, asn_cnt = 0;
+
 	
-	cout << "\nÔ­Ê¼Êı¾İ·Ö²¼: ÕıÌ¬·Ö²¼, Êı¾İÀàĞÍ = " << typeid(Score).name() << endl;
+	cout << fixed << "\nåŸå§‹æ•°æ®åˆ†å¸ƒ: æ­£æ€åˆ†å¸ƒ, æ•°æ®ç±»å‹ = " << typeid(Score).name() << endl;
 	for(n=1024; n<=65536; n*=2)
 	{
-		GetMemory(data, data0, n);							// ÉêÇë·ÖÅä¶Ñ¿Õ¼ä
-		InitScore(data0, n);								// ÉèÖÃÔ­Ê¼Êı¾İ
+		GetMemory(data, data0, n);							// ç”³è¯·åˆ†é…å †ç©ºé—´
+		InitScore(data0, n);								// è®¾ç½®åŸå§‹æ•°æ®
 		for(int i=0; i<m; i++)
 		{
-			ReSet(data, data0, n);							// »Ö¸´Ô­Ê¼Êı¾İ
-			gettime(1);										// ÉèÖÃ¼ÆÊ±Æğµã
-			f[i](data, n);									// µÚ i ÖÖÅÅĞòËã·¨
-			t = gettime();									// ·µ»Ø´Ó¼ÆÊ±Æğµãµ½Ä¿Ç°Ëù¾­ÀúµÄÊ±¼ä£¨Ãë£©
-			flag = Check(data, n);							// ¼ìÑéÅÅĞòµÄÕıÈ·ĞÔ
-			cout << n << '\t' << t << '\t' << algo[i] << (flag?": ÕıÈ·":": ´íÎó") << endl;
-			ShowScore(data, n, 10);							// µ¹ĞòÊä³ö×îºó10Ïî£¨ÓÉÓÚ°´ÉıĞòÅÅÁĞ£¬×î¸ß·ÖµÚÒ»ÃûÔÚ×îºó£©
+			Reset_counters(cmp_cnt, asn_cnt);
+			ReSet(data, data0, n);							// æ¢å¤åŸå§‹æ•°æ®
+			gettime(1);										// è®¾ç½®è®¡æ—¶èµ·ç‚¹
+			ll cmp_cnt = 0, asn_cnt = 0;
+			f[i](data, n, cmp_cnt, asn_cnt);             	// ç¬¬ i ç§æ’åºç®—æ³•
+			t = gettime();									// è¿”å›ä»è®¡æ—¶èµ·ç‚¹åˆ°ç›®å‰æ‰€ç»å†çš„æ—¶é—´ï¼ˆç§’ï¼‰
+			flag = Check(data, n);							// æ£€éªŒæ’åºçš„æ­£ç¡®æ€§
+			cout << n << '\t' << algo[i] << '\t' << cmp_cnt << '\t' << asn_cnt << '\t' << t << endl;
+			//ShowScore(data, n, 10);							// å€’åºè¾“å‡ºæœ€å10é¡¹ï¼ˆç”±äºæŒ‰å‡åºæ’åˆ—ï¼Œæœ€é«˜åˆ†ç¬¬ä¸€ååœ¨æœ€åï¼‰
 		}
-		FreeMemory(data, data0);							// ÊÍ·Å¶Ñ¿Õ¼ä×ÊÔ´£¬²¢Ê¹Ö¸ÕëÎª¿Õ
+		FreeMemory(data, data0);							// é‡Šæ”¾å †ç©ºé—´èµ„æºï¼Œå¹¶ä½¿æŒ‡é’ˆä¸ºç©º
 	}
 }

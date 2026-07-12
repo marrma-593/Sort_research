@@ -1,12 +1,12 @@
 // SortString.cpp
-/* Ë¼¿¼Ìâ
-1.	ÏÂÃæµÄ²âÊÔº¯ÊýÖÐ£¬strA¡¢strB¡¢strC¡¢strDÁªÏµµÄC-×Ö·û´®Êý×éµÄÄÚÈÝ´æ´¢ÔÚÄÚ´æµÄÊ²Ã´ÇøÓò£¿
-2.	Éè¼ÆBubbleA£¬BubbleBÁ½¸öº¯ÊýÖ®Ç°£¬Ë¼¿¼
-	(1) ÈçºÎ±È½ÏÁ½¸ö×Ö·û´®µÄÄÚÈÝ£¿
-	(2) ´æ´¢ÔÚÊ²Ã´ÇøÓòµÄ×Ö·û´®ÄÜ½»»»ÆäÄÚÈÝ£¿
-	(3) Èô²»ÄÜ½»»»×Ö·û´®µÄÄÚÈÝ£¬ÅÅÐò²Ù×÷ÖÐ½»»»Ê²Ã´£¿
-3.	GetStringsÎªÊ²Ã´ÒªÉè¼Æ³Éº¯ÊýÄ£°å£¬Á½´Îµ÷ÓÃÊ±£¬ÆäµÚ¶þ¸ö²ÎÊý·Ö±ðÊÇÊµÀý»¯³ÉÊ²Ã´£¿
-4.	GetStringsºÍFreeStringsº¯ÊýµÄµÚÒ»¸ö²ÎÊýÎªÊ²Ã´ÒªÊ¹ÓÃÒýÓÃÐÍ²ÎÊý´«µÝ¶þ¼¶Ö¸Õë£¿Èç¹û²»ÓÃÒýÓÃÐÍ²ÎÊý£¬»áÓÐÊ²Ã´½á¹û£¿
+/* æ€è€ƒé¢˜
+1.	ä¸‹é¢çš„æµ‹è¯•å‡½æ•°ä¸­ï¼ŒstrAã€strBã€strCã€strDè”ç³»çš„C-å­—ç¬¦ä¸²æ•°ç»„çš„å†…å®¹å­˜å‚¨åœ¨å†…å­˜çš„ä»€ä¹ˆåŒºåŸŸï¼Ÿ
+2.	è®¾è®¡BubbleAï¼ŒBubbleBä¸¤ä¸ªå‡½æ•°ä¹‹å‰ï¼Œæ€è€ƒ
+	(1) å¦‚ä½•æ¯”è¾ƒä¸¤ä¸ªå­—ç¬¦ä¸²çš„å†…å®¹ï¼Ÿ
+	(2) å­˜å‚¨åœ¨ä»€ä¹ˆåŒºåŸŸçš„å­—ç¬¦ä¸²èƒ½äº¤æ¢å…¶å†…å®¹ï¼Ÿ
+	(3) è‹¥ä¸èƒ½äº¤æ¢å­—ç¬¦ä¸²çš„å†…å®¹ï¼ŒæŽ’åºæ“ä½œä¸­äº¤æ¢ä»€ä¹ˆï¼Ÿ
+3.	GetStringsä¸ºä»€ä¹ˆè¦è®¾è®¡æˆå‡½æ•°æ¨¡æ¿ï¼Œä¸¤æ¬¡è°ƒç”¨æ—¶ï¼Œå…¶ç¬¬äºŒä¸ªå‚æ•°åˆ†åˆ«æ˜¯å®žä¾‹åŒ–æˆä»€ä¹ˆï¼Ÿ
+4.	GetStringså’ŒFreeStringså‡½æ•°çš„ç¬¬ä¸€ä¸ªå‚æ•°ä¸ºä»€ä¹ˆè¦ä½¿ç”¨å¼•ç”¨åž‹å‚æ•°ä¼ é€’äºŒçº§æŒ‡é’ˆï¼Ÿå¦‚æžœä¸ç”¨å¼•ç”¨åž‹å‚æ•°ï¼Œä¼šæœ‰ä»€ä¹ˆç»“æžœï¼Ÿ
 */
 #include <iostream>
 #include <cstring>
@@ -14,7 +14,7 @@ using namespace std;
 
 #define NUM 20
 
-void BubbleA(char (*str)[NUM], int size)			// Êý×éÖ¸Õë
+void BubbleA(char (*str)[NUM], int size)			// æ•°ç»„æŒ‡é’ˆ
 {
 	char temp[NUM];
 	for(int i = 1; i < size; i++){
@@ -26,11 +26,9 @@ void BubbleA(char (*str)[NUM], int size)			// Êý×éÖ¸Õë
 			}
 		}
 	}
-	cout << "ÇëÍê³Éº¯Êý BubbleA µÄ¶¨Òå£¬Ö´ÐÐÅÅÐò²Ù×÷¡£" << endl;
-
 }
 
-void BubbleB(char *str[], int size)					// Ö¸ÕëÊý×é
+void BubbleB(char *str[], int size)					// æŒ‡é’ˆæ•°ç»„
 {
 	char *temp;
 	for(int i = 1; i < size; i++){
@@ -41,9 +39,7 @@ void BubbleB(char *str[], int size)					// Ö¸ÕëÊý×é
 				str[j + 1] = temp;
 			}
 		}
-	}
-	cout << "ÇëÍê³Éº¯Êý BubbleB µÄ¶¨Òå£¬Ö´ÐÐÅÅÐò²Ù×÷¡£" << endl;
-	
+	}	
 }
 
 template <typename T> void ShowStrings(const char *prompt, const T *strs, int n)
@@ -89,22 +85,22 @@ void TestString()
 	GetStrings(strC, strA, n1);
 	GetStrings(strD, strB, n2);
 
-	cout << "\n\t*** ¶àÖÖ²»Í¬´æ´¢·½Ê½µÄC-×Ö·û´®Êý×éµÄÅÅÐò ***" << endl;
-	ShowStrings("\nÔ­Ê¼Êý¾Ý: ", strA, n1);
+	cout << "\n\t*** å¤šç§ä¸åŒå­˜å‚¨æ–¹å¼çš„C-å­—ç¬¦ä¸²æ•°ç»„çš„æŽ’åº ***" << endl;
+	ShowStrings("\nåŽŸå§‹æ•°æ®: ", strA, n1);
 	BubbleA(strA, n1);
-	ShowStrings("ÅÅÐò½á¹û: ",   strA, n1);
+	ShowStrings("æ•°ç»„æŒ‡é’ˆæŽ’åºç»“æžœ: ",   strA, n1);
 	
-	ShowStrings("\nÔ­Ê¼Êý¾Ý: ", strB, n2);
+	ShowStrings("\nåŽŸå§‹æ•°æ®: ", strB, n2);
 	BubbleB(strB, n2);
-	ShowStrings("ÅÅÐò½á¹û: ",   strB, n2);
+	ShowStrings("æŒ‡é’ˆæ•°ç»„æŽ’åºç»“æžœ: ",   strB, n2);
 	
-	ShowStrings("\nÔ­Ê¼Êý¾Ý: ", strC, n1);
-	BubbleB(strC, n1);						// µ÷ÓÃÒ»¸öÅÅÐòº¯ÊýÖ¸ÏòÅÅÐò²Ù×÷
-	ShowStrings("ÅÅÐò½á¹û: ",   strC, n1);
+	ShowStrings("\nåŽŸå§‹æ•°æ®: ", strC, n1);
+	BubbleB(strC, n1);						// è°ƒç”¨ä¸€ä¸ªæŽ’åºå‡½æ•°æŒ‡å‘æŽ’åºæ“ä½œ
+	ShowStrings("æŒ‡é’ˆæ•°ç»„æŽ’åºç»“æžœ: ",   strC, n1);
 
-	ShowStrings("\nÔ­Ê¼Êý¾Ý: ", strD, n2);
-	BubbleB(strD, n2);						// µ÷ÓÃÒ»¸öÅÅÐòº¯ÊýÖ¸ÏòÅÅÐò²Ù×÷
-	ShowStrings("ÅÅÐò½á¹û: ",   strD, n2);
+	ShowStrings("\nåŽŸå§‹æ•°æ®: ", strD, n2);
+	BubbleB(strD, n2);						// è°ƒç”¨ä¸€ä¸ªæŽ’åºå‡½æ•°æŒ‡å‘æŽ’åºæ“ä½œ
+	ShowStrings("æŒ‡é’ˆæ•°ç»„æŽ’åºç»“æžœ: ",   strD, n2);
 
 	FreeStrings(strC, n1);
 	FreeStrings(strD, n2);

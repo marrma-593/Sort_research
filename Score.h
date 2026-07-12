@@ -3,12 +3,12 @@
 
 struct Score
 {
-	char Id[9];															// Ñ§ºÅ£¬×î¶à´æ·Å8¸ö×Ö·û
-	int Chinese, Math, English, Physics, Chemistry, Total;				// 5ÃÅ¿Î³Ì³É¼¨¼°×Ü·Ö
+	char Id[9];															// å­¦å·ï¼Œæœ€å¤šå­˜æ”¾8ä¸ªå­—ç¬¦
+	int Chinese, Math, English, Physics, Chemistry, Total;				// 5é—¨è¯¾ç¨‹æˆç»©åŠæ€»åˆ†
 
-	bool operator< (const Score &s) const { return Total <  s.Total; }	// ÖØÔØ6¸ö¹ØÏµÔËËã·ûº¯Êı
-	bool operator<=(const Score &s) const { return Total <= s.Total; }	// Ê¹µÃÁ½¸ö½á¹¹Ìå±äÁ¿Ö®¼ä¿ÉÒÔÖ±½Ó½øĞĞ±È½Ï
-	bool operator> (const Score &s) const { return Total >  s.Total; }	// ´ÓÕâ6¸öº¯ÊıÌå¿É¼û£¬Êµ¼ÊÉÏÊÇ±È½Ï×Ü·ÖTotal
+	bool operator< (const Score &s) const { return Total <  s.Total; }	// é‡è½½6ä¸ªå…³ç³»è¿ç®—ç¬¦å‡½æ•°
+	bool operator<=(const Score &s) const { return Total <= s.Total; }	// ä½¿å¾—ä¸¤ä¸ªç»“æ„ä½“å˜é‡ä¹‹é—´å¯ä»¥ç›´æ¥è¿›è¡Œæ¯”è¾ƒ
+	bool operator> (const Score &s) const { return Total >  s.Total; }	// ä»è¿™6ä¸ªå‡½æ•°ä½“å¯è§ï¼Œå®é™…ä¸Šæ˜¯æ¯”è¾ƒæ€»åˆ†Total
 	bool operator>=(const Score &s) const { return Total >= s.Total; }
 	bool operator==(const Score &s) const { return Total == s.Total; }
 	bool operator!=(const Score &s) const { return Total != s.Total; }
@@ -20,6 +20,6 @@ struct Score
     }
 };
 
-void InitScore(Score *data, int n);										// ÉèÖÃÔ­Ê¼Êı¾İ
-void ShowScore(const Score *data, int size, int last);					// µ¹ĞòÊä³öÊı×éµÄ×îºólast¸öÔªËØ£¨¸ß·ÖÕß£©
-void TestScore();														// ²âÊÔº¯Êı
+void InitScore(Score *data, int n);										// è®¾ç½®åŸå§‹æ•°æ®
+void ShowScore(const Score *data, int size, int last);					// å€’åºè¾“å‡ºæ•°ç»„çš„æœ€ålastä¸ªå…ƒç´ ï¼ˆé«˜åˆ†è€…ï¼‰
+void TestScore();														// æµ‹è¯•å‡½æ•°

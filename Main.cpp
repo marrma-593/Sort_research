@@ -9,12 +9,12 @@
 #include "MyRand.h"
 using namespace std;
 
-double gettime(int restart)					// ²ÎÊı´øÄ¬ÈÏÖµ£¬·ÇÁã±íÊ¾ÖØĞÂ¼ÆÊ±
-{											// ·ñÔòÀÛ¼Æ¼ÆÊ±
+double gettime(int restart)					// å‚æ•°å¸¦é»˜è®¤å€¼ï¼Œéé›¶è¡¨ç¤ºé‡æ–°è®¡æ—¶
+{											// å¦åˆ™ç´¯è®¡è®¡æ—¶
 	const double c = 1.0/CLOCKS_PER_SEC;
-	static clock_t t = clock();				// ¾²Ì¬¾Ö²¿±äÁ¿¡£µÚÒ»´Îµ÷ÓÃÊ±£¬È·¶¨¼ÆÊ±Æğµã
-	if(restart) t = clock();				// ¸ù¾İÊµ²Î¾ö¶¨ÊÇ·ñÖØĞÂÈ·¶¨¼ÆÊ±Æğµã
-	return c*(clock()-t);					// ´ÓÉÏÒ»¼ÆÊ±µãµ½ÏÖÔÚËù¾­ÀúµÄÊ±¼ä
+	static clock_t t = clock();				// é™æ€å±€éƒ¨å˜é‡ã€‚ç¬¬ä¸€æ¬¡è°ƒç”¨æ—¶ï¼Œç¡®å®šè®¡æ—¶èµ·ç‚¹
+	if(restart) t = clock();				// æ ¹æ®å®å‚å†³å®šæ˜¯å¦é‡æ–°ç¡®å®šè®¡æ—¶èµ·ç‚¹
+	return c*(clock()-t);					// ä»ä¸Šä¸€è®¡æ—¶ç‚¹åˆ°ç°åœ¨æ‰€ç»å†çš„æ—¶é—´
 }
 
 template <typename T> void InitData(T *data, int n, int flag)
@@ -22,58 +22,85 @@ template <typename T> void InitData(T *data, int n, int flag)
 	int i;
 	switch(flag)
 	{
-	case 0: for(i=0; i<n; i++) data[i] = n-1-i;				break;	// ÄæĞò£¨´Ó´óµ½Ğ¡£©
-	case 1:	 for(i=0; i<n; i++) data[i] = i;					break;	// Ë³Ğò£¨´ÓĞ¡µ½´ó£©
-	case 2:  for(i=0; i<n; i++) data[i] = (T)UniformRand(54,90);break;	// [54,90]ÉÏµÄ¾ùÔÈ·Ö²¼
-	case 3: for(i=0; i<n; i++) data[i] = (T)GaussRand(72, 6*6);break;	// ÕıÌ¬·Ö²¼£¬¾ùÖµ72£¬·½²î36£¨¸ù·½²î6£©
+	case 0: for(i=0; i<n; i++) data[i] = n-1-i;				break;	// é€†åºï¼ˆä»å¤§åˆ°å°ï¼‰
+	case 1:	 for(i=0; i<n; i++) data[i] = i;					break;	// é¡ºåºï¼ˆä»å°åˆ°å¤§ï¼‰
+	case 2:  for(i=0; i<n; i++) data[i] = (T)UniformRand(54,90);break;	// [54,90]ä¸Šçš„å‡åŒ€åˆ†å¸ƒ
+	case 3: for(i=0; i<n; i++) data[i] = (T)GaussRand(72, 6*6);break;	// æ­£æ€åˆ†å¸ƒï¼Œå‡å€¼72ï¼Œæ–¹å·®36ï¼ˆæ ¹æ–¹å·®6ï¼‰
 	}
 }
 
-template <typename T> void Test(const T &x)					// µ÷ÓÃ±¾º¯ÊıµÄÊµ²ÎµÄÖµ²»ÖØÒª£¬ÖØÒªµÄÊÇÊµ²ÎµÄÊı¾İÀàĞÍ
+template <typename T> void Test(const T &x)					// è°ƒç”¨æœ¬å‡½æ•°çš„å®å‚çš„å€¼ä¸é‡è¦ï¼Œé‡è¦çš„æ˜¯å®å‚çš„æ•°æ®ç±»å‹
 {
-	T *data0=NULL, *data=NULL;								// Á½¸öÖ¸Õë³õÊ¼»¯ÎªNULL·Ç³£ÖØÒª£¡
-	char InitConf[][20] = {"ÍêÈ«ÄæĞò", "ÍêÈ«Ë³Ğò", "¾ùÔÈ·Ö²¼", "ÕıÌ¬·Ö²¼"};	// C-×Ö·û´®Êı×é
-	char algo[][20] 	= {"Ã°ÅİÅÅĞò", "Ñ¡ÔñÅÅĞò", "¿ìËÙÅÅĞò", "²åÈëÅÅĞò", "Ï£¶ûÅÅĞò", "Í°ÅÅĞò"};  // C-×Ö·û´®Êı×é
-	void (*f[])(T*, int, ll&, ll&) = {Bubble<T>, Select<T>, Qsort<T>, Insertionsort<T>, ShellSort<T>};
-	// jÎªÊı¾İ·Ö²¼ÉèÖÃ nÎªÊı¾İ¹æÄ£ mÎªº¯ÊıÖ¸ÕëÊı×éfµÄÔªËØ¸öÊı
+	T *data0=NULL, *data=NULL;								// ä¸¤ä¸ªæŒ‡é’ˆåˆå§‹åŒ–ä¸ºNULLéå¸¸é‡è¦ï¼
+	char InitConf[][20] = {"å®Œå…¨é€†åº", "å®Œå…¨é¡ºåº", "å‡åŒ€åˆ†å¸ƒ", "æ­£æ€åˆ†å¸ƒ"};	// C-å­—ç¬¦ä¸²æ•°ç»„
+	char algo[][20] 	= {"å†’æ³¡æ’åº", "é€‰æ‹©æ’åº", "å¿«é€Ÿæ’åº", "æ’å…¥æ’åº", "å¸Œå°”æ’åº", "æ¡¶æ’åº"};  // C-å­—ç¬¦ä¸²æ•°ç»„
+	void (*f[])(T*, int, ll&, ll&) = {Bubble<T>, Select<T>, Qsort<T>, Insertionsort<T>, ShellSort<T>, Bucketsort<T>};
+	// jä¸ºæ•°æ®åˆ†å¸ƒè®¾ç½® nä¸ºæ•°æ®è§„æ¨¡ mä¸ºå‡½æ•°æŒ‡é’ˆæ•°ç»„fçš„å…ƒç´ ä¸ªæ•°
 	int i, j, n, m = sizeof(f)/sizeof(*f);
-	bool flag[20];											// ÕâÀïÈÏÎª£º³£Á¿20×ã¹»´óÓÚ±äÁ¿ m¡£¼ÇÂ¼²»Í¬Ëã·¨Ö´ĞĞµÄÕıÈ·ĞÔ
-	double t[20];											// Í¬ÉÏ¡£¼ÇÂ¼²»Í¬Ëã·¨µÄÖ´ĞĞÊ±¼ä
-	
-	for(j = 0; j <= 3; j++)									// Êı¾İ·Ö²¼ÀàĞÍ
+	bool flag[20];											// è¿™é‡Œè®¤ä¸ºï¼šå¸¸é‡20è¶³å¤Ÿå¤§äºå˜é‡ mã€‚è®°å½•ä¸åŒç®—æ³•æ‰§è¡Œçš„æ­£ç¡®æ€§
+	double t[20];											// åŒä¸Šã€‚è®°å½•ä¸åŒç®—æ³•çš„æ‰§è¡Œæ—¶é—´
+	int cmp[20];
+	int asn[20];
+	ll cmp_cnt = 0, asn_cnt = 0;
+
+	for(j = 0; j <= 3; j++)									// æ•°æ®åˆ†å¸ƒç±»å‹
 	{
-		cout << "\nÊı¾İÀàĞÍ: " << typeid(T).name() << " (" << InitConf[j] << ")" << endl;
+		cout << fixed << "\næ•°æ®ç±»å‹: " << typeid(T).name() << " (" << InitConf[j] << ")" << endl;
 		for(i = 0; i < m; i++)
-			cout << '\t' << algo[i];
+			cout << '\t' << algo[i];	
 		cout << endl;
-		for(n=1024; n<=1048576; n*=2)
+
+		for(n=1024; n<=262144; n*=2)
 		{
-			GetMemory(data, data0, n);						// ÉêÇë·ÖÅä¶Ñ¿Õ¼ä
-			InitData(data0, n, j);							// ÉèÖÃÔ­Ê¼Êı¾İ
-			cout << "Êı¾İ¹æÄ£" << n << endl;
+			GetMemory(data, data0, n);						// ç”³è¯·åˆ†é…å †ç©ºé—´
+			InitData(data0, n, j);							// è®¾ç½®åŸå§‹æ•°æ®
+			cout << n;
 			for(i=0; i<m; i++)
 			{
-				ll cmp_cnt = 0, asn_cnt = 0;
-				ReSet(data, data0, n);						// »Ö¸´Ô­Ê¼Êı¾İ
-				gettime(1);									// ÉèÖÃ¼ÆÊ±Æğµã
-				f[i](data, n, cmp_cnt, asn_cnt);								// µÚ i ÖÖÅÅĞòËã·¨
-				t[i] = gettime();							// ·µ»Ø´Ó¼ÆÊ±Æğµãµ½Ä¿Ç°Ëù¾­ÀúµÄÊ±¼ä£¨Ãë£©
-				flag[i] = Check(data, n);					// ¼ìÑéÅÅĞòµÄÕıÈ·ĞÔ
+				if((n>=32768 && i == 2) || (n>=32768 && i == 0)){
+					t[i] = -1;
+					flag[i] = -1;
+					cmp[i] = -1;
+					asn[i] = -1;
+
+				}else{
+					Reset_counters(cmp_cnt, asn_cnt);
+					ReSet(data, data0, n);						// æ¢å¤åŸå§‹æ•°æ®
+					gettime(1);									// è®¾ç½®è®¡æ—¶èµ·ç‚¹
+					f[i](data, n, cmp_cnt, asn_cnt);			// ç¬¬ i ç§æ’åºç®—æ³•
+					t[i] = gettime();							// è¿”å›ä»è®¡æ—¶èµ·ç‚¹åˆ°ç›®å‰æ‰€ç»å†çš„æ—¶é—´ï¼ˆç§’ï¼‰
+					cmp[i] = cmp_cnt;
+					asn[i] = asn_cnt;
+					
+					flag[i] = Check(data, n);					// æ£€éªŒæ’åºçš„æ­£ç¡®æ€§
+				}
+				cout << "\t" << t[i];
+
 			}
+
+			for(i=0; i<m; i++)
+				cout << "\t" << cmp[i];
+			for(i=0; i<m; i++)
+				cout << "\t" << asn[i];
+			
+			for(i=0; i<m; i++)				
+				if (flag[i]) cout << "\t" << "æ­£ç¡®";
+				else cout << "\t" << "é”™è¯¯";
+
 			cout << endl;
-			FreeMemory(data, data0);						// ÊÍ·Å¶Ñ¿Õ¼ä×ÊÔ´£¬²¢Ê¹Ö¸ÕëÎª¿Õ
+			FreeMemory(data, data0);						// é‡Šæ”¾å †ç©ºé—´èµ„æºï¼Œå¹¶ä½¿æŒ‡é’ˆä¸ºç©º
 		}
 	}
 }
 
-int main()						// Ö÷º¯Êı
+int main()						// ä¸»å‡½æ•°
 {
-	void TestString();			// º¯ÊıÔ­ĞÍ£¬ÓÃÓÚÉùÃ÷
-	srand(time(NULL));			// ÉèÖÃËæ»úÊı·¢ÉúÆ÷µÄÖÖ×Ó
+	void TestString();			// å‡½æ•°åŸå‹ï¼Œç”¨äºå£°æ˜
+	srand(time(NULL));			// è®¾ç½®éšæœºæ•°å‘ç”Ÿå™¨çš„ç§å­
 	
-	Test(int(0));				// ²âÊÔintÀàĞÍÊı¾İ
-	Test(double(0));			// ²âÊÔdoubleÀàĞÍÊı¾İ
-	//TestScore();				// ²âÊÔScoreÀàĞÍÊı¾İ
-	//TestString();				// ²âÊÔC-×Ö·û´®Êı×éÅÅĞò£¨¶àÖÖ´æ´¢·½Ê½£©
+	Test(int(0));				// æµ‹è¯•intç±»å‹æ•°æ®
+	Test(double(0));			// æµ‹è¯•doubleç±»å‹æ•°æ®
+	TestScore();				// æµ‹è¯•Scoreç±»å‹æ•°æ®
+	TestString();				// æµ‹è¯•C-å­—ç¬¦ä¸²æ•°ç»„æ’åºï¼ˆå¤šç§å­˜å‚¨æ–¹å¼ï¼‰
 	return 0;
 }
