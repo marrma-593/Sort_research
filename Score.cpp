@@ -40,8 +40,8 @@ void ShowScore(const Score *data, int size, int last)
 void TestScore()
 {
 	Score *data0=NULL, *data=NULL;							// 两个指针初始化为NULL非常重要！
-	char algo[][20] = {"冒泡排序", "选择排序", "快速排序"};	// C-字符串数组
-	void (*f[])(Score*, int) = {Bubble, Select, Qsort};		// 函数指针数组（元素为一系列函数的入口地址）
+	char algo[][20] = {"冒泡排序", "选择排序", "快速排序", "插入排序", "希尔排序", "桶排序"};  // C-字符串数组
+	void (*f[])(T*, int, ll&, ll&) = {Bubble<T>, Select<T>, Qsort<T>, Insertionsort<T>, ShellSort<T>};// 函数指针数组（元素为一系列函数的入口地址）
 	int n, m = sizeof(f)/sizeof(*f);						// m为函数指针数组f的元素个数（此处有3个函数指针，分别指向3个排序函数的入口地址）
 	bool flag;
 	double t;

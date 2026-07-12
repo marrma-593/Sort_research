@@ -1,7 +1,13 @@
-// Sorts.h		ÈıÖÖ£¨Ã°Åİ¡¢Ñ¡Ôñ¡¢¿ìËÙ£©»ù±¾ÅÅĞòËã·¨£¨ÉıĞò£©
-#ifndef SORTS_H
-#define SORTS_H
-#include <iostream>
+#pragma once
+
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#define ll long long
+#define Asn(a, b) Asn_with_cnt(a, b, asn_cnt)
+#define Cmp(a, b) Cmp_with_cnt(a, b, cmp_cnt)
+#define Cmp2(a, b) Cmp_with_cnt2(a, b, cmp_cnt)
+#define Excg(a, b) Excg_with_cnt(a, b, asn_cnt)
 using namespace std;
 
 double gettime(int restart=0);
@@ -21,12 +27,14 @@ template <typename T> void FreeMemory(T *&data, T *&data0)			// ÊÍ·ÅÖ¸ÕëËù"ÓµÓĞ"
 	data0 = data = NULL;											// ÕâÒ»Ìõ¸³ÖµÓï¾ä·Ç³£ÖØÒª£¡±£³Ö"Òşº¬Ô¼¶¨"
 }
 
+//»Ö¸´ÎªÔ­Ê¼Êı¾İ
 template <typename T> void ReSet(T *data, const T *data0, int n)	// ÓÃÓÚ»Ö¸´"Ô­Ê¼Êı¾İ"£¬ÒÔ±£Ö¤²»Í¬µÄÅÅĞòËã·¨´¦ÀíÍêÈ«ÏàÍ¬µÄÊı¾İ
 {
 	for(int i=0; i<n; i++)
 		data[i] = data0[i];
 }
 
+//¼ì²éÊÇ·ñÅÅĞò³É¹¦£¨ÉıĞò£©
 template <typename T> bool Check(const T *a, int size)				// ¼ìÑéÊı×éÔªËØÊÇ·ñÒÑ°´ÉıĞòÅÅÁĞ
 {
 	for(int i=1; i<size; i++)
@@ -35,8 +43,43 @@ template <typename T> bool Check(const T *a, int size)				// ¼ìÑéÊı×éÔªËØÊÇ·ñÒÑ°
 	return true;
 }
 
-// ÈıÖÖ»ù±¾µÄ£¨Ã»ÓĞÓÅ»¯µÄ£©ÅÅĞòËã·¨
-template <typename T> void Bubble(T *a, int size)	// Ã°ÅİÅÅĞò
+
+//ÖØÖÃ¼ÆÊıÆ÷
+inline void Reset_counters(ll &cmp_cnt, ll &asn_cnt){
+	cmp_cnt = 0;
+	asn_cnt = 0;
+}
+
+//´øÓĞ¼ÆÊıµÄ±È½Ï£¨´óÓÚ£©
+template <typename T> inline bool Cmp_with_cnt(const T a, const T b, ll &cmp_cnt){
+	cmp_cnt++;
+	return a > b;
+}
+
+//´øÓĞ¼ÆÊıµÄ±È½Ï(´óÓÚµÈÓÚ)
+template <typename T> inline bool Cmp_with_cnt2(const T a, const T b, ll &cmp_cnt){
+	cmp_cnt++;
+	return a >= b;
+}
+
+//´øÓĞ¼ÆÊıµÄ¸³Öµ
+template <typename T> inline void Asn_with_cnt(T &a, T &b, ll &asn_cnt){
+	asn_cnt++;
+	a = b;
+}
+
+//´øÓĞ¼ÆÊıµÄ½»»»±äÁ¿µÄÖµ
+template <typename T> inline void Excg_with_cnt(T &a, T &b, ll &asn_cnt){
+	T temp;
+	Asn_with_cnt(temp, a, asn_cnt);
+	Asn_with_cnt(a, b, asn_cnt);
+	Asn_with_cnt(b, temp, asn_cnt);
+}
+
+
+
+// Ã°ÅİÅÅĞò
+template <typename T> void Bubble(T *a, int size, ll &cmp_cnt, ll &asn_cnt)	
 {
 	T temp;											// ¶¨ÒåÒ»¸ö¾Ö²¿±äÁ¿£¬Êı¾İÀàĞÍÓëĞÎÊ½Êı¾İÀàĞÍÏàÍ¬
 	int i, j;
@@ -44,36 +87,34 @@ template <typename T> void Bubble(T *a, int size)	// Ã°ÅİÅÅĞò
 	{
 		for(j=0; j<size-i; j++)
 		{
-			if(a[j] > a[j+1])						// ÏàÁÚÔªËØÖ®¼ä±È½Ï£¬±ØÒªÊ±
+			if(Cmp(a[j], a[j+1]))						// ÏàÁÚÔªËØÖ®¼ä±È½Ï£¬±ØÒªÊ±
 			{
-				temp = a[j];						// ½»»» a[j] Óë a[j+1]
-				a[j] = a[j+1];
-				a[j+1] = temp;
+				Excg(a[j], a[j + 1]);
 			}
 		}
 	}
 }
 
-template <typename T> void Select(T *a, int size)	// Ñ¡ÔñÅÅĞò
+// Ñ¡ÔñÅÅĞò
+template <typename T> void Select(T *a, int size, ll &cmp_cnt, ll &asn_cnt)	
 {
 	T temp;
 	int i, j, k=0;
 	for(i=1; i<size; i++)							// Ñ­»·size-1´Î
 	{
 		for(j=i; j<size; j++)
-			if(a[j] < a[k])
+			if(Cmp(a[k], a[j]))
 				k = j;								// ÕÒ³öµ±Ç°·¶Î§ÄÚ"×îĞ¡"ÔªËØµÄÏÂ±ê
 		if(k!=i-1)									// Èô"×îĞ¡"ÔªËØ²»ÊÇa[i-1]£¬Ôò½»»»Ö®
-		{
-			temp = a[k];
-			a[k] = a[i-1];
-			a[i-1] = temp;
+		{					
+			Excg(a[k], a[i -  1]); // ½»»» a[j] Óë a[j+1]
 		}
 		k = i;
 	}
 }
 
-template <typename T> void Qsort(T *a, int size)	// ¿ìËÙÅÅĞò
+// ¿ìËÙÅÅĞò
+template <typename T> void Qsort(T *a, int size, ll &cmp_cnt, ll &asn_cnt)	
 {
 	T pivot, temp;
 	int left=0, right=size-1;						// ÏÂ±ê£¨ÕûÊı£©
@@ -83,16 +124,93 @@ template <typename T> void Qsort(T *a, int size)	// ¿ìËÙÅÅĞò
 	pivot = a[right];								// Ñ¡Ôñ×îºóÒ»¸öÖµÎª·Ö½çÖµ
 	do
 	{
-		while(left<right && a[left]<=pivot) left++;	// ´Ë´¦ "<=" ÊÇÈÃÓë·Ö½çÖµÏàµÈµÄÔªËØÔİÊ±ÁôÔÚÔ­µØ
-		while(left<right && a[right]>=pivot)right--;// ´Ë´¦ ">=" ÊÇÈÃÓë·Ö½çÖµÏàµÈµÄÔªËØÔİÊ±ÁôÔÚÔ­µØ
+		while(left<right && Cmp2(pivot, a[left])) left++;	// ´Ë´¦ "<=" ÊÇÈÃÓë·Ö½çÖµÏàµÈµÄÔªËØÔİÊ±ÁôÔÚÔ­µØ
+		while(left<right && Cmp2(a[right], pivot)) right--;// ´Ë´¦ ">=" ÊÇÈÃÓë·Ö½çÖµÏàµÈµÄÔªËØÔİÊ±ÁôÔÚÔ­µØ
 		if(left < right)
-		{
-			temp=a[left]; a[left]=a[right]; a[right]=temp;
+		{						
+			Excg(a[left], a[right]);          // ½»»» a[j] Óë a[j+1]
 		}
 	}while(left < right);
-	a[size-1] = a[left]; a[left] = pivot;			// ÕÒµ½·Ö½çµã left
-	Qsort(a, left);									// µİ¹éµ÷ÓÃ(×ó²à²¿·Ö)
-	Qsort(a+left+1, size-left-1);					// µİ¹éµ÷ÓÃ(ÓÒ²à²¿·Ö)
+	Asn(a[size-1], a[left]);
+	Asn(a[left], pivot);			// ÕÒµ½·Ö½çµã left
+	Qsort(a, left, cmp_cnt, asn_cnt);									// µİ¹éµ÷ÓÃ(×ó²à²¿·Ö)
+	Qsort(a+left+1, size-left-1, cmp_cnt, asn_cnt);					// µİ¹éµ÷ÓÃ(ÓÒ²à²¿·Ö)
 }
 
-#endif
+//²åÈëÅÅĞò
+template <typename T> void Insertionsort(T *a, int size, ll &cmp_cnt, ll &asn_cnt){    
+	for(int i = 1; i < size; i++){
+		T key;
+		Asn(key, a[i]);
+		int j = i - 1;
+		while(j >= 0 && Cmp(key, a[j])){   //a[j] < key
+			Asn(a[j + 1], a[j]);
+			j--;
+		}
+		Asn(a[j + 1], key);
+	}
+}
+
+//Ï£¶ûÅÅĞò
+template <typename T> void ShellSort(T *a, int size, ll &cmp_cnt, ll &asn_cnt) {
+    for (int gap = size / 2; gap > 0; gap /= 2) {
+        for (int i = gap; i < size; i++) {
+            T temp;
+            Asn(temp, a[i]); 
+            
+            int j = i;
+            while (j >= gap && Cmp(a[j - gap], temp)) {
+                Asn(a[j], a[j - gap]);
+                j -= gap;
+            }
+            Asn(a[j], temp); 
+        }
+    }
+}
+
+//Í°ÅÅĞò
+template <typename T> void Bucketsort(T *a, int size, ll &cmp_cnt, ll &asn_cnt){
+	int root = 0;
+	int min_idx = root;
+    int max_idx = root;
+
+    for (int i = 1; i < size; ++i) {
+        if (Cmp(a[min_idx], a[root + i])) {
+            min_idx = root + i;
+        }
+        if (Cmp(a[root + i], a[max_idx])) {
+            max_idx = root + i;
+        }
+    }
+
+    int bucket_count = size/100;
+    vector<vector<T>> buckets(bucket_count);
+
+    double range = static_cast<double>(a[max_idx] - a[min_idx]);
+    for (int i = 0; i < size; ++i) {
+        double diff = static_cast<double>(a[root + i] - a[min_idx]);
+        int b_idx = static_cast<int>((diff / range) * (bucket_count - 1));
+        
+        if (b_idx >= bucket_count) b_idx = bucket_count - 1;
+        
+        buckets[b_idx].push_back(a[root + i]);
+    }
+
+    int current = 0;
+    for (int i = 0; i < bucket_count; ++i) {
+        for (size_t j = 0; j < buckets[i].size(); ++j) {
+            Asn(a[root + current], buckets[i][j]);
+            current++;
+        }
+    }
+
+    for (int i = 1; i < size; ++i) {
+        for (int j = i; j > 0; --j) {
+            if (Cmp(a[root + j - 1], a[root + j])) {
+                Excg(a[root + j - 1], a[root + j]);
+            } else {
+                break;
+            }
+        }
+    }
+}

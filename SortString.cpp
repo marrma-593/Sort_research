@@ -16,12 +16,32 @@ using namespace std;
 
 void BubbleA(char (*str)[NUM], int size)			// 数组指针
 {
+	char temp[NUM];
+	for(int i = 1; i < size; i++){
+		for(int j = 0; j < size - i; j++){
+			if(strcmp(str[j], str[j + 1]) > 0){
+				strcpy(temp, str[j]);
+				strcpy(str[j], str[j + 1]);
+				strcpy(str[j + 1], temp);
+			}
+		}
+	}
 	cout << "请完成函数 BubbleA 的定义，执行排序操作。" << endl;
 
 }
 
 void BubbleB(char *str[], int size)					// 指针数组
 {
+	char *temp;
+	for(int i = 1; i < size; i++){
+		for(int j = 0; j < size - i; j++){
+			if(strcmp(str[j], str[j + 1]) > 0){
+				temp = str[j];
+				str[j] = str[j + 1];
+				str[j + 1] = temp;
+			}
+		}
+	}
 	cout << "请完成函数 BubbleB 的定义，执行排序操作。" << endl;
 	
 }
