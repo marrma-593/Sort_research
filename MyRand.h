@@ -1,6 +1,5 @@
 // MyRand.h		产生服从高斯分布（正态分布）和均匀分布的随机数
-#ifndef MY_RAND_H
-#define MY_RAND_H
+#pragma once
 /*
 Box-Muller是产生随机数的一种方法。Box-Muller 算法隐含的原理非常深奥，但结果却是相当简单。
 如果在(0,1]值域内有两个一致的随机数字u1和u2，则
@@ -15,4 +14,3 @@ x = m + (z * σ)服从N(m, σ^2)。
 double GaussRand(double mean=0, double variance=1);	// 正态分布(高斯分布) mena:均值、数学期望，variance方差
 double UniformRand(double a=0, double b=1);			// 区间[a, b]上的均匀分布
 
-#endif

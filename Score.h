@@ -1,6 +1,5 @@
 // Score.h
-#ifndef SCORE_H
-#define SCORE_H
+#pragma once
 
 struct Score
 {
@@ -13,10 +12,14 @@ struct Score
 	bool operator>=(const Score &s) const { return Total >= s.Total; }
 	bool operator==(const Score &s) const { return Total == s.Total; }
 	bool operator!=(const Score &s) const { return Total != s.Total; }
+
+
+
+	int operator-(const Score &s) const { 
+        return Total - s.Total; 
+    }
 };
 
 void InitScore(Score *data, int n);										// 设置原始数据
 void ShowScore(const Score *data, int size, int last);					// 倒序输出数组的最后last个元素（高分者）
 void TestScore();														// 测试函数
-
-#endif

@@ -3,6 +3,7 @@
 #include <typeinfo>
 #include <cstdlib>
 #include <ctime>
+#define ll long long
 #include "Sorts.h"
 #include "Score.h"
 #include "MyRand.h"
@@ -21,10 +22,10 @@ template <typename T> void InitData(T *data, int n, int flag)
 	int i;
 	switch(flag)
 	{
-	case -1: for(i=0; i<n; i++) data[i] = n-1-i;				break;	// ÄæĞò£¨´Ó´óµ½Ğ¡£©
-	case 0:	 for(i=0; i<n; i++) data[i] = i;					break;	// Ë³Ğò£¨´ÓĞ¡µ½´ó£©
-	case 1:  for(i=0; i<n; i++) data[i] = (T)UniformRand(54,90);break;	// [54,90]ÉÏµÄ¾ùÔÈ·Ö²¼
-	default: for(i=0; i<n; i++) data[i] = (T)GaussRand(72, 6*6);break;	// ÕıÌ¬·Ö²¼£¬¾ùÖµ72£¬·½²î36£¨¸ù·½²î6£©
+	case 0: for(i=0; i<n; i++) data[i] = n-1-i;				break;	// ÄæĞò£¨´Ó´óµ½Ğ¡£©
+	case 1:	 for(i=0; i<n; i++) data[i] = i;					break;	// Ë³Ğò£¨´ÓĞ¡µ½´ó£©
+	case 2:  for(i=0; i<n; i++) data[i] = (T)UniformRand(54,90);break;	// [54,90]ÉÏµÄ¾ùÔÈ·Ö²¼
+	case 3: for(i=0; i<n; i++) data[i] = (T)GaussRand(72, 6*6);break;	// ÕıÌ¬·Ö²¼£¬¾ùÖµ72£¬·½²î36£¨¸ù·½²î6£©
 	}
 }
 
@@ -32,46 +33,32 @@ template <typename T> void Test(const T &x)					// µ÷ÓÃ±¾º¯ÊıµÄÊµ²ÎµÄÖµ²»ÖØÒª£¬Ö
 {
 	T *data0=NULL, *data=NULL;								// Á½¸öÖ¸Õë³õÊ¼»¯ÎªNULL·Ç³£ÖØÒª£¡
 	char InitConf[][20] = {"ÍêÈ«ÄæĞò", "ÍêÈ«Ë³Ğò", "¾ùÔÈ·Ö²¼", "ÕıÌ¬·Ö²¼"};	// C-×Ö·û´®Êı×é
-	char algo[][20] 	= {"Ã°ÅİÅÅĞò", "Ñ¡ÔñÅÅĞò", "¿ìËÙÅÅĞò"};				// C-×Ö·û´®Êı×é
-	void (*f[])(T*, int) = {Bubble, Select, Qsort};			// º¯ÊıÖ¸ÕëÊı×é£¨ÔªËØÎªÒ»ÏµÁĞº¯ÊıµÄÈë¿ÚµØÖ·£©
-	int i, j, n, m = sizeof(f)/sizeof(*f);					// mÎªº¯ÊıÖ¸ÕëÊı×éfµÄÔªËØ¸öÊı£¨´Ë´¦ÓĞ3¸öº¯ÊıÖ¸Õë£¬·Ö±ğÖ¸Ïò3¸öÅÅĞòº¯ÊıµÄÈë¿ÚµØÖ·£©
+	char algo[][20] 	= {"Ã°ÅİÅÅĞò", "Ñ¡ÔñÅÅĞò", "¿ìËÙÅÅĞò", "²åÈëÅÅĞò", "Ï£¶ûÅÅĞò", "Í°ÅÅĞò"};  // C-×Ö·û´®Êı×é
+	void (*f[])(T*, int, ll&, ll&) = {Bubble<T>, Select<T>, Qsort<T>, Insertionsort<T>, ShellSort<T>};
+	// jÎªÊı¾İ·Ö²¼ÉèÖÃ nÎªÊı¾İ¹æÄ£ mÎªº¯ÊıÖ¸ÕëÊı×éfµÄÔªËØ¸öÊı
+	int i, j, n, m = sizeof(f)/sizeof(*f);
 	bool flag[20];											// ÕâÀïÈÏÎª£º³£Á¿20×ã¹»´óÓÚ±äÁ¿ m¡£¼ÇÂ¼²»Í¬Ëã·¨Ö´ĞĞµÄÕıÈ·ĞÔ
 	double t[20];											// Í¬ÉÏ¡£¼ÇÂ¼²»Í¬Ëã·¨µÄÖ´ĞĞÊ±¼ä
 	
-	for(j=2; j>=-1; j--)									// Êı¾İ·Ö²¼ÀàĞÍ
+	for(j = 0; j <= 3; j++)									// Êı¾İ·Ö²¼ÀàĞÍ
 	{
-		cout << "\nÊı¾İÀàĞÍ: " << typeid(T).name() << " (" << InitConf[j+1] << ")" << endl;
-		for(i=0; i<m; i++)
+		cout << "\nÊı¾İÀàĞÍ: " << typeid(T).name() << " (" << InitConf[j] << ")" << endl;
+		for(i = 0; i < m; i++)
 			cout << '\t' << algo[i];
 		cout << endl;
-		for(n=1024; n<=65536; n*=2)
+		for(n=1024; n<=1048576; n*=2)
 		{
 			GetMemory(data, data0, n);						// ÉêÇë·ÖÅä¶Ñ¿Õ¼ä
 			InitData(data0, n, j);							// ÉèÖÃÔ­Ê¼Êı¾İ
-			cout << n;
+			cout << "Êı¾İ¹æÄ£" << n << endl;
 			for(i=0; i<m; i++)
 			{
-				if(n==65536 && j<=0 && i==m-1)				// j<=0(ÍêÈ«Ë³Ğò¡¢ÍêÈ«ÄæĞò)£¬i==m-1(¿ìËÙÅÅĞò£¬µİ¹éËã·¨)
-					break;
+				ll cmp_cnt = 0, asn_cnt = 0;
 				ReSet(data, data0, n);						// »Ö¸´Ô­Ê¼Êı¾İ
 				gettime(1);									// ÉèÖÃ¼ÆÊ±Æğµã
-				f[i](data, n);								// µÚ i ÖÖÅÅĞòËã·¨
+				f[i](data, n, cmp_cnt, asn_cnt);								// µÚ i ÖÖÅÅĞòËã·¨
 				t[i] = gettime();							// ·µ»Ø´Ó¼ÆÊ±Æğµãµ½Ä¿Ç°Ëù¾­ÀúµÄÊ±¼ä£¨Ãë£©
 				flag[i] = Check(data, n);					// ¼ìÑéÅÅĞòµÄÕıÈ·ĞÔ
-			}
-			for(i=0; i<m; i++)
-			{
-				if(n==65536 && j<=0 && i==m-1)				// j<=0(ÍêÈ«Ë³Ğò¡¢ÍêÈ«ÄæĞò)£¬i==m-1(¿ìËÙÅÅĞò£¬µİ¹éËã·¨)
-					cout << "\t" << endl;
-				else
-					cout << '\t' << t[i];
-			}
-			for(i=0; i<m; i++)
-			{
-				if(n==65536 && j<=0 && i==m-1)				// j<=0(ÍêÈ«Ë³Ğò¡¢ÍêÈ«ÄæĞò)£¬i==m-1(¿ìËÙÅÅĞò£¬µİ¹éËã·¨)
-					cout << "\t¿ìËÙÅÅĞò£ºÓÉÓÚµİ¹é²ã´ÎÌ«Éî£¬¿ÉÄÜµ¼ÖÂÕ»Òç³ö£¬¹ÊÌø¹ı¡£";
-				else
-					cout << '\t' << algo[i] << (flag[i]?": ÕıÈ·":": ´íÎó");
 			}
 			cout << endl;
 			FreeMemory(data, data0);						// ÊÍ·Å¶Ñ¿Õ¼ä×ÊÔ´£¬²¢Ê¹Ö¸ÕëÎª¿Õ
@@ -86,7 +73,7 @@ int main()						// Ö÷º¯Êı
 	
 	Test(int(0));				// ²âÊÔintÀàĞÍÊı¾İ
 	Test(double(0));			// ²âÊÔdoubleÀàĞÍÊı¾İ
-	TestScore();				// ²âÊÔScoreÀàĞÍÊı¾İ
-	TestString();				// ²âÊÔC-×Ö·û´®Êı×éÅÅĞò£¨¶àÖÖ´æ´¢·½Ê½£©
+	//TestScore();				// ²âÊÔScoreÀàĞÍÊı¾İ
+	//TestString();				// ²âÊÔC-×Ö·û´®Êı×éÅÅĞò£¨¶àÖÖ´æ´¢·½Ê½£©
 	return 0;
 }
