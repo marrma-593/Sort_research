@@ -2,7 +2,7 @@
 date > results_release.txt
 date +%T >> results_release.txt
 
-echo "about 2 minutes, please wait ..."
+echo "about 15 minutes, please wait ..."
 
 ./Sorts >> results_release.txt
 

@@ -39,8 +39,8 @@ template <typename T> void Test(const T &x)					// 调用本函数的实参的�
 	int i, j, n, m = sizeof(f)/sizeof(*f);
 	bool flag[20];											// 这里认为：常量20足够大于变量 m。记录不同算法执行的正确性
 	double t[20];											// 同上。记录不同算法的执行时间
-	int cmp[20];
-	int asn[20];
+	ll cmp[20];
+	ll asn[20];
 	ll cmp_cnt = 0, asn_cnt = 0;
 
 	for(j = 0; j <= 3; j++)									// 数据分布类型
