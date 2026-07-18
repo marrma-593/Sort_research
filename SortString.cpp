@@ -10,11 +10,16 @@
 */
 #include <iostream>
 #include <cstring>
+#define ll long long
 using namespace std;
+#define BubbleA(a, b) BubbleA_with_cnt(a, b, cmp_cnt, asn_cnt)
+#define BubbleB(a, b) BubbleB_with_cnt(a, b, cmp_cnt, asn_cnt)
+
+#include "Sorts.h"
 
 #define NUM 20
 
-void BubbleA(char (*str)[NUM], int size)			// 数组指针
+void BubbleA_with_cnt(char (*str)[NUM], int size, ll &cmp_cnt, ll &asn_cnt)			// 数组指针
 {
 	char temp[NUM];
 	for(int i = 1; i < size; i++){
@@ -23,12 +28,14 @@ void BubbleA(char (*str)[NUM], int size)			// 数组指针
 				strcpy(temp, str[j]);
 				strcpy(str[j], str[j + 1]);
 				strcpy(str[j + 1], temp);
+				asn_cnt += 3;
 			}
+			cmp_cnt++;
 		}
 	}
 }
 
-void BubbleB(char *str[], int size)					// 指针数组
+void BubbleB_with_cnt(char *str[], int size, ll &cmp_cnt, ll &asn_cnt)					// 指针数组
 {
 	char *temp;
 	for(int i = 1; i < size; i++){
@@ -37,7 +44,9 @@ void BubbleB(char *str[], int size)					// 指针数组
 				temp = str[j];
 				str[j] = str[j + 1];
 				str[j + 1] = temp;
+				asn_cnt += 3;
 			}
+			cmp_cnt++;
 		}
 	}	
 }
@@ -78,29 +87,85 @@ void FreeStrings(char **&strs, int n)
 
 void TestString()
 {
-	char strA[][NUM]={"enter", "number", "size", "begin", "of", "cat", "case", "program", "certain", "a", "cake", "side"};
-	char *strB[]    ={"enter", "number", "size", "begin", "of", "cat", "case", "program", "certain", "an", "cake", "side"};
-	char **strC, **strD;
+	const char *orig[] = {
+    "beautiful", "character", "dangerous", "education", "fantastic", "generous",
+    "happiness", "important", "knowledge", "liberation", "magnificent", "necessary",
+    "opportunity", "particular", "qualification", "remarkable", "satisfactory", "tremendous",
+    "understanding", "valuable", "wonderful", "yesterday", "absolutely", "additional",
+    "agreement", "ambitious", "announcement", "appearance", "arrangement", "association",
+    "atmosphere", "attraction", "authority", "beginning", "belonging", "beneficial",
+    "boundaries", "brilliant", "businessman", "capability", "carefully", "certainty",
+    "challenge", "characteristic", "circumstance", "collection", "comfortable", "commandment",
+    "commitment", "communication", "companion", "comparison", "competition", "completely",
+    "conclusion", "condition", "connection", "conscious", "consequence", "conservation",
+    "consider", "consistent", "constitution", "construction", 
+	"beautiful", "character", "dangerous", "education", "fantastic", "generous",
+    "happiness", "important", "knowledge", "liberation", "magnificent", "necessary",
+    "opportunity", "particular", "qualification", "remarkable", "satisfactory", "tremendous",
+    "understanding", "valuable", "wonderful", "yesterday", "absolutely", "additional",
+    "agreement", "ambitious", "announcement", "appearance", "arrangement", "association",
+    "atmosphere", "attraction", "authority", "beginning", "belonging", "beneficial",
+    "boundaries", "brilliant", "businessman", "capability", "carefully", "certainty",
+    "challenge", "characteristic", "circumstance", "collection", "comfortable", "commandment",
+    "commitment", "communication", "companion", "comparison", "competition", "completely",
+    "conclusion", "condition", "connection", "conscious", "consequence", "conservation",
+    "consider", "consistent", "constitution", "construction",
+	"beautiful", "character", "dangerous", "education", "fantastic", "generous",
+    "happiness", "important", "knowledge", "liberation", "magnificent", "necessary",
+    "opportunity", "particular", "qualification", "remarkable", "satisfactory", "tremendous",
+    "understanding", "valuable", "wonderful", "yesterday", "absolutely", "additional",
+    "agreement", "ambitious", "announcement", "appearance", "arrangement", "association",
+    "atmosphere", "attraction", "authority", "beginning", "belonging", "beneficial",
+    "boundaries", "brilliant", "businessman", "capability", "carefully", "certainty",
+    "challenge", "characteristic", "circumstance", "collection", "comfortable", "commandment",
+    "commitment", "communication", "companion", "comparison", "competition", "completely",
+    "conclusion", "condition", "connection", "conscious", "consequence", "conservation",
+    "consider", "consistent", "constitution", "construction",
+	"beautiful", "character", "dangerous", "education", "fantastic", "generous",
+    "happiness", "important", "knowledge", "liberation", "magnificent", "necessary",
+    "opportunity", "particular", "qualification", "remarkable", "satisfactory", "tremendous",
+    "understanding", "valuable", "wonderful", "yesterday", "absolutely", "additional",
+    "agreement", "ambitious", "announcement", "appearance", "arrangement", "association",
+    "atmosphere", "attraction", "authority", "beginning", "belonging", "beneficial",
+    "boundaries", "brilliant", "businessman", "capability", "carefully", "certainty",
+    "challenge", "characteristic", "circumstance", "collection", "comfortable", "commandment",
+    "commitment", "communication", "companion", "comparison", "competition", "completely",
+    "conclusion", "condition", "connection", "conscious", "consequence", "conservation",
+    "consider", "consistent", "constitution", "construction"
+};
+
+	char strA[sizeof(orig)/sizeof(*orig)][NUM];
+	char *strB[sizeof(orig)/sizeof(*orig)];
+	char **strC = NULL, **strD = NULL;
+
+	ll asn_cnt = 0, cmp_cnt = 0;
 	int n1 = sizeof(strA)/sizeof(*strA), n2 = sizeof(strB)/sizeof(*strB);
-	GetStrings(strC, strA, n1);
-	GetStrings(strD, strB, n2);
 
 	cout << "\n\t*** 多种不同存储方式的C-字符串数组的排序 ***" << endl;
-	ShowStrings("\n原始数据: ", strA, n1);
-	BubbleA(strA, n1);
-	ShowStrings("数组指针排序结果: ",   strA, n1);
-	
-	ShowStrings("\n原始数据: ", strB, n2);
-	BubbleB(strB, n2);
-	ShowStrings("指针数组排序结果: ",   strB, n2);
-	
-	ShowStrings("\n原始数据: ", strC, n1);
-	BubbleB(strC, n1);						// 调用一个排序函数指向排序操作
-	ShowStrings("指针数组排序结果: ",   strC, n1);
+	cout << fixed << "type time cmp_cnt asn_cnt" << endl;
 
-	ShowStrings("\n原始数据: ", strD, n2);
-	BubbleB(strD, n2);						// 调用一个排序函数指向排序操作
-	ShowStrings("指针数组排序结果: ",   strD, n2);
+	const char *labels[] = {"StrA", "StrB", "StrC", "StrD"};
+
+	for (int i = 0; i < 4; i++){
+		for (int j = 0; j < n1; j++)
+			strcpy(strA[j], orig[j]);
+		for (int j = 0; j < n2; j++)
+			strB[j] = (char *)orig[j];
+		FreeStrings(strC, n1);
+		FreeStrings(strD, n2);
+		GetStrings(strC, strA, n1);
+		GetStrings(strD, strB, n2);
+
+		gettime(1);
+		switch (i)		{
+		case 0: BubbleA(strA, n1); break;
+		case 1: BubbleB(strB, n2); break;
+		case 2: BubbleB(strC, n1); break;
+		case 3: BubbleB(strD, n2); break;
+		}
+		cout << labels[i] << " " << gettime() << " " << cmp_cnt << " " << asn_cnt << endl;
+		Reset_counters(cmp_cnt, asn_cnt);
+	}
 
 	FreeStrings(strC, n1);
 	FreeStrings(strD, n2);
