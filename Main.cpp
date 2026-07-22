@@ -50,7 +50,7 @@ template <typename T> void Test(const T &x)					// 调用本函数的实参的�
 			cout << '\t' << algo[i];	
 		cout << endl;
 
-		for(n=1024; n<=262144; n*=2)
+		for(n=1024; n<=262144; n*=2) //262144 / 65536
 		{
 			GetMemory(data, data0, n);						// 申请分配堆空间
 			InitData(data0, n, j);							// 设置原始数据
