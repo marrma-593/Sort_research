@@ -1,6 +1,7 @@
-.vscode
+.vscode/
 *.exe
-.claude
-Debug
-Release
-.png
+.claude/
+Debug/
+Release/
+*.png
+outputs/

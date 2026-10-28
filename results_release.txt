@@ -142,16 +142,9 @@ Mon Jul 13 10:15:41 PM CST 2026
 65536	桶排序	196605	65536	0.002900
 
 	*** 多种不同存储方式的C-字符串数组的排序 ***
-
-原始数据: enter, number, size, begin, of, cat, case, program, certain, a, cake, side
-数组指针排序结果: a, begin, cake, case, cat, certain, enter, number, of, program, side, size
-
-原始数据: enter, number, size, begin, of, cat, case, program, certain, an, cake, side
-指针数组排序结果: an, begin, cake, case, cat, certain, enter, number, of, program, side, size
-
-原始数据: enter, number, size, begin, of, cat, case, program, certain, a, cake, side
-指针数组排序结果: a, begin, cake, case, cat, certain, enter, number, of, program, side, size
-
-原始数据: enter, number, size, begin, of, cat, case, program, certain, an, cake, side
-指针数组排序结果: an, begin, cake, case, cat, certain, enter, number, of, program, side, size
+type time cmp_cnt asn_cnt
+StrA 0.000332 32640 46752
+StrB 0.000099 32640 46752
+StrC 0.000111 32640 46752
+StrD 0.000107 32640 46752
 22:32:12
